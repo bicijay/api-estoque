@@ -1,0 +1,10 @@
+apps:
+  - name: laravel-queue-worker
+    script: artisan
+    exec_mode: fork
+    interpreter: php
+    instances: 8
+    args:
+      - queue:work
+      - --queue=processamento-cnab
+      - --timeout=3600
