@@ -17,9 +17,9 @@ class BaixarArquivoCnab
     {
         $filePath = storage_path("app/armazenamento/{$arquivoUid}");
 
-//        Http::withOptions([
-//            'sink' => $filePath
-//        ])->get("https://filetransfer.io/data-package/r1NZWYEk/download");
+        Http::withOptions([
+            'sink' => $filePath
+        ])->get("https://filetransfer.io/data-package/r1NZWYEk/download");
 
         return $filePath;
     }
