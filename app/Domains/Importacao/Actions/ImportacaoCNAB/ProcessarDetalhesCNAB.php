@@ -27,7 +27,7 @@ class ProcessarDetalhesCNAB
     {
 
         $jobs = [];
-        $this->cnabFileParser->getDetalhesChunks($dadosProcessamentoCNAB->caminhoArquivoCnab, 10000, function ($detalhes) use ($jobs) {
+        $this->cnabFileParser->getDetalhesChunks($dadosProcessamentoCNAB->caminhoArquivoCnab, 10000, function ($detalhes) use (&$jobs) {
             $jobs[] = new ActionJob(ProcessarLinhasDetalhesCnab::class, [$detalhes]);
         });
 
