@@ -94,7 +94,8 @@ return [
         'mongodb' => [
             'driver' => 'mongodb',
             'dsn' => env('DB_DSN'),
-            'database' => env('DB_MONGO_DATABASE', 'homestead'),
+            'database' => env('DB_MONGODB_DATABASE', 'homestead'),
+            'max_insert_chunk' => env("DB_MONGODB_INSERT_CHUNK", 10000)
         ],
 
     ],

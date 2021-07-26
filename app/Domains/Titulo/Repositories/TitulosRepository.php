@@ -16,10 +16,15 @@ class TitulosRepository
      */
     public function insertMany(array $tituloDTOS)
     {
-        foreach (array_chunk($tituloDTOS, 10000) as $chunk) {
+        foreach (array_chunk($tituloDTOS, 1500) as $chunk) {
+
             DB::connection('mongodb')->table('titulos')->raw(function (Collection $collection) use ($chunk) {
-                $collection->insertMany($chunk, ["ordered" => false, "writeConcern" => new WriteConcern(0)]);
+                $collection->insertMany($chunk, [
+                    "ordered" => false,
+                    "writeConcern" => new WriteConcern(0)
+                ]);
             });
+
         }
     }
 }

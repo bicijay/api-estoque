@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateTitulosTable extends Migration
@@ -14,7 +15,7 @@ class CreateTitulosTable extends Migration
     public function up()
     {
         Schema::create('titulos', function (Blueprint $table) {
-            $table->id("titulo");
+            $table->id();
             $table->string("banco")->nullable();
             $table->text("conteudo")->nullable();
             $table->timestamps();
