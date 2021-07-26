@@ -34,7 +34,7 @@ class ProcessarDetalhesCNAB
             })->dispatch();
 
 
-        $this->cnabFileParser->getDetalhesChunks($dadosProcessamentoCNAB->caminhoArquivoCnab, 10000, function ($detalhes) use ($batch) {
+        $this->cnabFileParser->getDetalhesChunks($dadosProcessamentoCNAB->caminhoArquivoCnab, 20000, function ($detalhes) use ($batch) {
             $batch->add([
                 new ActionJob(ProcessarLinhasDetalhesCnab::class, [$detalhes])
             ]);
