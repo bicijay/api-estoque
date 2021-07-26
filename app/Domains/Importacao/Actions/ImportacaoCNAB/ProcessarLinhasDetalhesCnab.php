@@ -25,7 +25,7 @@ class ProcessarLinhasDetalhesCnab
             $titulo->valor_titulo = 200;
             $titulo->valor_presente = $this->calcVp($titulo);
 
-            $dataInsert[] = $titulo;
+            $dataInsert[] = (array)$titulo;
         }
 
         DB::table("titulos")->insert($titulos);
