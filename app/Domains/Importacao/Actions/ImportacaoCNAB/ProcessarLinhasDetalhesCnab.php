@@ -20,8 +20,10 @@ class ProcessarLinhasDetalhesCnab
         foreach ($detalhes as $detalhe) {
             $dataInsert[] = [
                 "banco" => substr($detalhe, 0, 3),
-                "linha" => $detalhe
+                "conteudo" => $detalhe
             ];
         }
+
+        DB::table("titulos")->insert($dataInsert);
     }
 }
