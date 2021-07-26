@@ -3,7 +3,6 @@
 
 namespace App\Packages;
 
-ini_set('memory_limit', '32MB');
 
 class LargeFile
 {
