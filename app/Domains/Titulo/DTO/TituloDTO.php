@@ -11,6 +11,7 @@ class TituloDTO
         public ?float $taxa_cessao = null,
         public ?float $valor_titulo = null,
         public ?float $valor_presente = null,
+        public ?string $conteudo = null,
     )
     {
     }
