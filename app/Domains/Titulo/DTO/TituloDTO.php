@@ -15,4 +15,15 @@ class TituloDTO
     )
     {
     }
+
+    public function toArray(): array
+    {
+        return [
+            "banco" => $this->banco,
+            "taxa_cessao" => $this->taxa_cessao,
+            "valor_titulo" => $this->valor_titulo,
+            "valor_presente" => $this->valor_presente,
+            "conteudo" => $this->conteudo
+        ];
+    }
 }

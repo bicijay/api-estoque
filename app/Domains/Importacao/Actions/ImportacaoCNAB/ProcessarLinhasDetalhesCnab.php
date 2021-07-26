@@ -24,8 +24,10 @@ class ProcessarLinhasDetalhesCnab
             $titulo->banco = substr($detalhe, 0, 3);
             $titulo->valor_titulo = 200;
             $titulo->valor_presente = $this->calcVp($titulo);
+            $titulo->taxa_cessao = 1.50;
+            $titulo->conteudo = $detalhe;
 
-            $dataInsert[] = (array)$titulo;
+            $dataInsert[] = $titulo->toArray();
         }
 
         DB::table("titulos")->insert($titulos);
