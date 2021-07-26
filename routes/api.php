@@ -10,7 +10,6 @@ Route::prefix("titulos")->group(function () {
     Route::get("/{uid}", [TitulosController::class, 'get']);
 });
 
-
 Route::prefix("importacao")->group(function () {
     Route::post("cnab", [ImportacaoCNABController::class, 'import']);
 });

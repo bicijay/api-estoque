@@ -29,7 +29,7 @@ class ProcessarLinhasDetalhesCnab
             $titulos[] = $titulo->toArray();
         }
 
-        foreach(array_chunk($titulos, 2000) as $chunk) {
+        foreach(array_chunk($titulos, 5000) as $chunk) {
             DB::table("titulos")->insert($chunk);
         }
     }
