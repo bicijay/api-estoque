@@ -25,18 +25,19 @@ class ProcessarDetalhesCNAB
 
     public function execute(DadosProcessamentoCNAB $dadosProcessamentoCNAB)
     {
-
-        $jobs = [];
-        $this->cnabFileParser->getDetalhesChunks($dadosProcessamentoCNAB->caminhoArquivoCnab, 10000, function ($detalhes) use (&$jobs) {
-            $jobs[] = new ActionJob(ProcessarLinhasDetalhesCnab::class, [$detalhes]);
-        });
-
-        $batch = Bus::batch($jobs)
+        $batch = Bus::batch([])
             ->onQueue('processamento-cnab')
             ->then(function (Batch $batch) use ($dadosProcessamentoCNAB) {
                 $this->alterarStatusImportacao->execute($dadosProcessamentoCNAB->importacao->importacao_uid, "sucesso_importacao");
             })->catch(function (Batch $batch, \Throwable $e) use ($dadosProcessamentoCNAB) {
                 $this->alterarStatusImportacao->execute($dadosProcessamentoCNAB->importacao->importacao_uid, "erro_importacao", $e->getMessage());
             })->dispatch();
+
+
+        $this->cnabFileParser->getDetalhesChunks($dadosProcessamentoCNAB->caminhoArquivoCnab, 20000, function ($detalhes) use ($batch) {
+            $batch->add([
+                new ActionJob(ProcessarLinhasDetalhesCnab::class, [$detalhes])
+            ]);
+        });
     }
 }
