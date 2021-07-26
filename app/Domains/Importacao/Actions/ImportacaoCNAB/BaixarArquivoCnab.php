@@ -15,7 +15,12 @@ class BaixarArquivoCnab
 
     public function execute(string $arquivoUid): string
     {
-        $filePath = storage_path("app/armazenamento/{$arquivoUid}");
+        $dirPath = storage_path("app/armazenamento");
+        $filePath = $dirPath . "/{$arquivoUid}";
+
+        if (!is_dir($dirPath)) {
+            mkdir($dirPath);
+        }
 
         Http::withOptions([
             'sink' => $filePath
