@@ -4,14 +4,21 @@
 namespace App\Domains\Importacao\Actions\ImportacaoCNAB;
 
 
-use App\Domains\Importacao\DTOs\DadosProcessamentoCNAB;
 use App\Domains\Titulo\DTO\TituloDTO;
+
+use App\Domains\Titulo\Repositories\TitulosRepository;
 use Illuminate\Support\Facades\DB;
+use Jenssegers\Mongodb\Collection;
+use MongoDB\Driver\WriteConcern;
 use Spatie\QueueableAction\QueueableAction;
 
 class ProcessarLinhasDetalhesCnab
 {
     use QueueableAction;
+
+    function __construct(private TitulosRepository $titulosRepository)
+    {
+    }
 
     public function execute(array $detalhes)
     {
@@ -23,19 +30,12 @@ class ProcessarLinhasDetalhesCnab
             $titulo->banco = substr($detalhe, 0, 3);
             $titulo->valor_titulo = 200;
             $titulo->taxa_cessao = 1.50;
-            $titulo->valor_presente = $this->calcVp($titulo);
+            $titulo->valor_presente = $titulo->valor_titulo * pow(1 + ($titulo->taxa_cessao / 100), 35 / 252);
             $titulo->conteudo = $detalhe;
 
-            $titulos[] = $titulo->toArray();
+            $titulos[] = $titulo;
         }
 
-        foreach(array_chunk($titulos, 5000) as $chunk) {
-            DB::table("titulos")->insert($chunk);
-        }
-    }
-
-    private function calcVp(TituloDTO $tituloDTO): float
-    {
-        return $tituloDTO->valor_titulo * pow(1 + ($tituloDTO->taxa_cessao / 100), 35 / 252);
+        $this->titulosRepository->insertMany($titulos);
     }
 }
