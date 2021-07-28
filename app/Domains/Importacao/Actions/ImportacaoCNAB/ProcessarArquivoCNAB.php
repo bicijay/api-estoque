@@ -10,6 +10,7 @@ use App\Domains\Importacao\Models\Importacao;
 use App\Domains\Titulo\Actions\DeletarTitulosImportados;
 use App\Packages\CnabClient;
 use App\Packages\OperacaoClient;
+use Illuminate\Support\Facades\Log;
 use Spatie\QueueableAction\QueueableAction;
 
 class ProcessarArquivoCNAB
@@ -37,10 +38,12 @@ class ProcessarArquivoCNAB
             $taxaCessao = $this->operacaoClient->getOperacaoTaxaDeCessao($importacao->operacao_uid);
             $operacaoLayouts = $this->cnabClient->getOperationLayouts($importacao->operacao_uid);
             $caminhoArquivoCnab = $this->baixarArquivoCnab->execute($importacao->arquivo_uid);
+            Log::info("baixou arquivo");
 
             $dadosParaProcessamento = new DadosProcessamentoCNAB($importacao, $operacao, $taxaCessao, $operacaoLayouts, $caminhoArquivoCnab);
             $this->deletarTitulosImportados->execute($importacao->importacao_uid);
             $this->processarHeaderLoteCnab->execute($dadosParaProcessamento);
+            Log::info("processou o header arquivo");
             $this->processarDetalhesCNAB->execute($dadosParaProcessamento);
 
         } catch (\Throwable $e) {

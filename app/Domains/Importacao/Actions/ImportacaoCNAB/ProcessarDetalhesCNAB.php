@@ -9,6 +9,7 @@ use App\Domains\Importacao\DTOs\DadosProcessamentoCNAB;
 use App\Domains\Importacao\Parsers\CnabFileParser;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
 use Spatie\QueueableAction\ActionJob;
 use Spatie\QueueableAction\QueueableAction;
 
@@ -31,6 +32,8 @@ class ProcessarDetalhesCNAB
             $jobs[] = new ActionJob(ProcessarLinhasDetalhesCnab::class, [$detalhes]);
         });
 
+        Log::info("criou os jobs");
+
         $batch = Bus::batch($jobs)
             ->onQueue('processamento-cnab')
             ->then(function (Batch $batch) use ($dadosProcessamentoCNAB) {
@@ -38,5 +41,7 @@ class ProcessarDetalhesCNAB
             })->catch(function (Batch $batch, \Throwable $e) use ($dadosProcessamentoCNAB) {
                 $this->alterarStatusImportacao->execute($dadosProcessamentoCNAB->importacao->importacao_uid, "erro_importacao", $e->getMessage());
             })->dispatch();
+
+        Log::info("deu dispatch");
     }
 }
