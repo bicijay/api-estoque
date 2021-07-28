@@ -29,8 +29,8 @@ class ProcessarDetalhesCNAB
         $jobs = [];
 
         $this->cnabFileParser->getDetalhesChunks($dadosProcessamentoCNAB->caminhoArquivoCnab, config("processamento.max_detalhes_chunk"), function ($detalhes) use (&$jobs) {
-            Log::info("criou um chunk");
             $jobs[] = new ActionJob(ProcessarLinhasDetalhesCnab::class, [$detalhes]);
+            Log::info("criou um chunk");
         });
 
         Log::info("criou os jobs");
