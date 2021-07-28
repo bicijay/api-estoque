@@ -31,7 +31,7 @@ class ProcessarDetalhesCNAB
         $caminhoCnab = $dadosProcessamentoCNAB->caminhoArquivoCnab;
 
         $batch = Bus::batch([])
-            ->onQueue('processamento-cnab')
+            ->onQueue('processamento-detalhes')
             ->then(function (Batch $batch) use ($dadosProcessamentoCNAB) {
                 $this->alterarStatusImportacao->execute($dadosProcessamentoCNAB->importacao->importacao_uid, "sucesso_importacao");
             })->catch(function (Batch $batch, \Throwable $e) use ($dadosProcessamentoCNAB) {
