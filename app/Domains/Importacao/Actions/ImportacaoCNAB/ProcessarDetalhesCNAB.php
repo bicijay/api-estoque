@@ -27,7 +27,7 @@ class ProcessarDetalhesCNAB
     {
         $jobs = [];
 
-        $this->cnabFileParser->getDetalhesChunks($dadosProcessamentoCNAB->caminhoArquivoCnab, config("processamento.max_detalhes_chunk"), function ($detalhes) use ($jobs) {
+        $this->cnabFileParser->getDetalhesChunks($dadosProcessamentoCNAB->caminhoArquivoCnab, config("processamento.max_detalhes_chunk"), function ($detalhes) use (&$jobs) {
             $jobs[] = new ActionJob(ProcessarLinhasDetalhesCnab::class, [$detalhes]);
         });
 
